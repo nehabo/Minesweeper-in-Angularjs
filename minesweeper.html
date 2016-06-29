@@ -257,6 +257,8 @@
 
         $scope.resetMinefield = function() {
           $scope.minefield = createMinefield();
+          $scope.winMessage = false;
+          $scope.loseMessage = false;
         };
 
       });
