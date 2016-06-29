@@ -18,13 +18,13 @@
     <div ng-controller="minesweeperCtrl">
       <h2 ng-if="winMessage">You won!!</h2>
       <h2 ng-if="loseMessage">You Lost!</h2>
-      <button ng-click="size='small'">small</button><button ng-click="size='large'">large</button>
+      <button ng-click="resetMinefield()">RESET</button>
       <table class = "minefield" border="1">
         <tr ng-repeat="row in minefield.rows">
           <td ng-repeat="spot in row.spots" ng-click="uncoverSpot(spot)" ng-right-click="flagSpot(spot)">  
             <img ng-if="spot.isCovered && !spot.flag" src="images/covered.png">
             <img ng-if="spot.isCovered && spot.flag" src="images/flag-mine.png">
-            <img ng-if="!spot.isCovered && spot.content == 'empty'" src="images/empty.png">
+            <img ng-if="!spot.isCovered && spot.content == 'empty' && !spot.flag" src="images/empty.png">
             <img ng-if="spot.reveal && !spot.mineBlast && spot.content == 'mine'" src="images/mine.png"/>
             <img ng-if="spot.reveal && spot.flag && spot.wrongFlag && !(spot.content == 'mine')" src="images/flag-mine-wrong.png"/>
             <img ng-if="spot.mineBlast && spot.reveal && spot.content == 'mine'" src="images/mine-wrong.png"/>
@@ -253,6 +253,10 @@
               clearSpots($scope.minefield);
             }
           }     
+        };
+
+        $scope.resetMinefield = function() {
+          $scope.minefield = createMinefield();
         };
 
       });
