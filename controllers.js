@@ -1,5 +1,9 @@
 var controllers = angular.module('controllers',['directives']);
-controllers.controller('minesweeperCtrl', function($scope){
+controllers.controller('minesweeperCtrl', function($scope, $interval){
+
+  // var MineField = require('minefieldClass.js');
+  // $scope.Minefield = new MineField();
+
 
   function createMinefield() {
     var minefield = {};
@@ -126,8 +130,6 @@ function calculateAllNumbers(minefield) {
   }
 }
 
-$scope.minefield = createMinefield();
-
 function clearSpots(minefield) {
   for(var row = 0; row < 9; row++) {
     for(var column = 0; column < 9; column++) {
@@ -174,6 +176,12 @@ function hasWon(minefield) {
   return true;
 }
 
+var gameInProgress = false;
+
+$scope.startGame = function() {
+  gameInProgress = true;
+}
+
 $scope.flagSpot = function(spot) {
   if (spot.isCovered == true) {
     spot.flag = true;
@@ -184,7 +192,9 @@ $scope.uncoverSpot = function(spot) {
   if (spot.isCovered) {
     spot.isCovered = false;
     if(spot.content == 'mine') {
+      gameInProgress = false;
       $scope.loseMessage = true;
+      $scope.losses++;
       for(var y = 0; y < 9; y++) {
         for(var x = 0; x < 9; x++) {
           getSpot($scope.minefield, y, x).isCovered = false;
@@ -196,6 +206,8 @@ $scope.uncoverSpot = function(spot) {
     } 
     else if(hasWon($scope.minefield)) {
       $scope.winMessage = true;
+      $scope.wins++;
+      gameInProgress = false;
       for(var y = 0; y < 9; y++) {
         for(var x = 0; x < 9; x++) {
           getSpot($scope.minefield, y, x).isCovered = false;
@@ -217,10 +229,38 @@ $scope.uncoverSpot = function(spot) {
   }
 };
 
+$scope.wins = 0;
+$scope.losses = 0;
+$scope.seconds = 0;
+$scope.minutes = 0;
+
+$scope.startTimer = function() {
+        if(gameInProgress == true){
+        $scope.seconds++;
+        if($scope.seconds >= 60){
+          $scope.seconds = $scope.seconds/60;
+          $scope.minutes++;
+        }
+      }
+    }
+
+    $interval( function(){ $scope.startTimer(); }, 1000);
+
+$scope.quit = function() {
+  $scope.winMessage = false;
+  $scope.loseMessage = false;
+  $scope.seconds = 0;
+  $scope.minutes = 0;
+};
+
 $scope.resetMinefield = function() {
   $scope.minefield = createMinefield();
   $scope.winMessage = false;
   $scope.loseMessage = false;
+  $scope.wins = 0;
+  $scope.losses = 0;
+  $scope.seconds = 0;
+  $scope.minutes = 0;
 };
 
 });
