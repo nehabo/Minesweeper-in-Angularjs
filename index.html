@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"></script>  -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="css/minefieldGrid.css">
+<body>
+  <div ng-app = 'minesweeperApp'>
+    <div ng-controller="minesweeperCtrl">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+    <h1>Minesweeper</h1>
+
+    <div ng-show = "init">
+      <button class="btn" ng-click="startGame()">START GAME</button>
+    </div>  
+
+      <div ng-hide = "init">
+      <button class="btn-primary" ng-click="resetMinefield()">RESET</button>
+      <button class="btn-primary" ng-click = "quit()">QUIT</button>
+      <p>Score: {{wins}} Wins - {{losses}} Losses</p>
+
+      <p>Time:  {{timer | date : "mm:ss"}}</p>
+      <div ng-if="winMessage"><h2>You won!! Your Time: {{ timer | date : "mm:ss" }} seconds!</h2>
+      <button class="btn" ng-click = "resetMinefield()">Play Again</button>
+      <button class="btn" ng-click = "quit()">Quit</button>
+      </div>
+      <div ng-if="loseMessage">
+        <h2>You Lost!</h2>
+        <button class="btn" ng-click = "resetMinefield()">Play Again</button>
+        <button class="btn" ng-click = "quit()">Quit</button>
+      </div>
+      <table class = "minefield" border="1">
+        <tr ng-repeat="row in minefield.rows">
+          <td ng-repeat="spot in row.spots" ng-click="uncoverSpot(spot)" ng-right-click="flagSpot(spot)">  
+            <div ng-if="spot.isCovered && !spot.flag" class = "square gray"></div>
+            <div ng-if="spot.isCovered && spot.flag" class="square gray"><div class="square-content"><div><span class="glyphicon glyphicon-flag"></span></div></div></div>
+            <div ng-if="!spot.isCovered && spot.content == 'empty' && !spot.flag" class="square"></div>
+            <div ng-if="spot.reveal && !spot.mineBlast && spot.content == 'mine'" class="square"><div class="square-content"><div><span class="glyphicon glyphicon-asterisk"></span></div></div></div>
+            <div ng-if="spot.reveal && spot.flag && spot.wrongFlag && !(spot.content == 'mine')" class="square"><div class="square-content"><div><span class="glyphicon glyphicon-ban-circle"></span></div></div></div>
+            <div ng-if="spot.mineBlast && spot.reveal && spot.content == 'mine'" class="square red"><div class="square-content"><div><span class="glyphicon glyphicon-asterisk"></span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 1 && !spot.flag" class="square"><div class="square-content"><div><span>1</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 2 && !spot.flag" class="square"><div class="square-content"><div><span>2</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 3 && !spot.flag" class="square"><div class="square-content"><div><span>3</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 4 && !spot.flag" class="square"><div class="square-content"><div><span>4</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 5 && !spot.flag" class="square"><div class="square-content"><div><span>5</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 6 && !spot.flag" class="square"><div class="square-content"><div><span>6</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 7 && !spot.flag" class="square"><div class="square-content"><div><span>7</span></div></div></div>
+            <div ng-if="(!spot.isCovered || spot.reveal) && spot.content == 8 && !spot.flag" class="square"><div class="square-content"><div><span>8</span></div></div></div>
+          </td>
+        </tr>
+      </table>
+     
+      </div>
+    </div>
+    <div class="col-md-4"></div>
+    </div>
+  </div>
+</body>
+<script src = "js/app.js"></script>
+<!-- <script src = "minefieldClass.js"></script> -->
+<script src = "js/controllers.js"></script>
+<script src = "js/directives.js"></script>
+
+
+</html>

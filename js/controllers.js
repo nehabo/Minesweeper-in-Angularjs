@@ -9,23 +9,23 @@ controllers.controller('minesweeperCtrl', function($scope, $interval){
     var minefield = {};
     minefield.rows = [];
 
-    minefield.rows.forEach(function(i, index) {
+    for(var i = 0; i < 9; i++) {
       var row = {};
       row.spots = [];
       
-      row.spots.forEach(function(j, index) {
+      for(var j = 0; j < 9; j++) {
         var spot = {};
         spot.isCovered = true;
         spot.content = 'empty'
         spot.flag = false;
-        spot.isRevealed = false;
+        spot.reveal = false;
         spot.mineBlast = false;
         spot.wrongFlag = false;
         row.spots.push(spot);
-      });
+      }
       
       minefield.rows.push(row);
-    });
+    }
 
     placeMines(minefield);
     calculateAllNumbers(minefield);
@@ -38,7 +38,7 @@ controllers.controller('minesweeperCtrl', function($scope, $interval){
   }
 
   function placeMines(minefield) {
-    forEach(function(i, index) {
+    for(var i = 0; i < 10; i++) {
       while(true){
         var row = Math.round(Math.random() * 8);
         var column = Math.round(Math.random() * 8);
@@ -48,7 +48,7 @@ controllers.controller('minesweeperCtrl', function($scope, $interval){
         }
       }
       spot.content = "mine";
-    });
+    }
   }
 
   function calculateNumber(minefield, row, column) {
@@ -123,64 +123,56 @@ if(mineCount > 0) {
 }
 
 function calculateAllNumbers(minefield) {
-  forEach(function(y, index) {
-    forEach(function(x, index) {
+  for(var y = 0; y < 9; y++) {
+    for(var x = 0; x < 9; x++) {
       calculateNumber(minefield, x, y);
-    });
-  });
+    }
+  }
 }
 
 function clearSpots(minefield) {
-  forEach(function(row, index) {
-    forEach(function(column, index) {
+  for(var row = 0; row < 9; row++) {
+    for(var column = 0; column < 9; column++) {
       var spot = getSpot(minefield, row, column);
       if(!spot.isCovered && spot.content == 'empty') {
         if(row>0){
           if(column>0){
-           x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+           getSpot(minefield, row - 1, column - 1).isCovered = false;
          }
-          x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+         getSpot(minefield, row - 1, column).isCovered = false;
          if(column<8){
-          x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+          getSpot(minefield, row -1, column + 1).isCovered = false;
         }
       }
       if(column>0){
-        x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+        getSpot(minefield, row, column - 1).isCovered = false;
       }
       if(column<8){
-        x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+        getSpot(minefield, row, column + 1).isCovered = false;
       }
       if(row<8){
         if(column>0){
-         x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+          getSpot(minefield, row + 1, column - 1).isCovered = false;
         }
-        x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+        getSpot(minefield, row + 1, column).isCovered = false;
         if(column<8){
-          x = getSpot(minefield, row - 1, column - 1);
-           $scope.uncoverSpot(x);
+          getSpot(minefield, row + 1, column + 1).isCovered = false;
         }
       }
     }
-  });
-});
+  }
+}
 }
 
 function hasWon(minefield) {
-  forEach(function(y, index) {
-    forEach(function(x, index) {
+  for(var y = 0; y < 9; y++) {
+    for(var x = 0; x < 9; x++) {
       var spot = getSpot(minefield, y, x);
       if(spot.isCovered && spot.content != "mine") {
         return false;
       }
-    }); 
-  });  
+    } 
+  }  
   return true;
 }
 
@@ -193,45 +185,42 @@ $scope.startGame = function() {
   gameInProgress = true;
   startTime = getTime();
   $scope.init = false;
+
 }
 
 $scope.flagSpot = function(spot) {
-  if(spot.isCovered && spot.flag){
-    spot.flag = false;
-  }
-  if(spot.isCovered && !spot.flag) {
+  if (spot.isCovered == true) {
     spot.flag = true;
   }
-  
 };
 
 $scope.uncoverSpot = function(spot) {
-  if(spot.flag) {spot.flag = false;}
-  if (spot.isCovered) {spot.isCovered = false;
+  if (spot.isCovered) {
+    spot.isCovered = false;
     if(spot.content == 'mine') {
       gameInProgress = false;
       $scope.loseMessage = true;
       $scope.losses++;
-      forEach(function(y, index) {
-        forEach(function(x, index) {
+      for(var y = 0; y < 9; y++) {
+        for(var x = 0; x < 9; x++) {
           getSpot($scope.minefield, y, x).isCovered = false;
-          getSpot($scope.minefield, y, x).isRevealed = true;
+          getSpot($scope.minefield, y, x).reveal = true;
           getSpot($scope.minefield, y, x).wrongFlag = true;
           getSpot($scope.minefield, y, x).mineBlast = true;
-        }); 
-      });
+        } 
+      }
     } 
     else if(hasWon($scope.minefield)) {
       $scope.winMessage = true;
       $scope.wins++;
       gameInProgress = false;
-      forEach(function(y, index) {
-        forEach(function(x, index) {
+      for(var y = 0; y < 9; y++) {
+        for(var x = 0; x < 9; x++) {
           getSpot($scope.minefield, y, x).isCovered = false;
           getSpot($scope.minefield, y, x).flag = false;
-          getSpot($scope.minefield, y, x).isRevealed = true;
-        });
-      }); 
+          getSpot($scope.minefield, y, x).reveal = true;
+        }
+      } 
     }
     else if(spot.flag) {
       spot.flag = false;
