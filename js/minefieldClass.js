@@ -5,24 +5,24 @@ class MineField {
       rows: []
     }
   }
-  create() {
-    for(var i = 0; i < 9; i++) {
+  createMinefield() {
+    minefield.rows.forEach(function(i, index) {
       var row = {};
       row.spots = [];
-
-      for(var j = 0; j < 9; j++) {
+      
+      row.spots.forEach(function(j, index) {
         var spot = {};
         spot.isCovered = true;
         spot.content = 'empty'
         spot.flag = false;
-        spot.reveal = false;
+        spot.isRevealed = false;
         spot.mineBlast = false;
         spot.wrongFlag = false;
         row.spots.push(spot);
-      }
-
+      });
+      
       this.grid.rows.push(row);
-    }
+    });
     this.placeMines();
     this.calculateAllNumbers();
   }
@@ -43,6 +43,20 @@ class MineField {
       }
       spot.content = "mine";
     }
+  }
+
+  placeMines() {
+    forEach(function(i, index) {
+      while(true){
+        var row = Math.round(Math.random() * 8);
+        var column = Math.round(Math.random() * 8);
+        var spot = getSpot(row, column);
+        if (spot.content == "empty"){
+          break;
+        }
+      }
+      spot.content = "mine";
+    });
   }
 
   calculateNumber(row, column) {
@@ -114,6 +128,14 @@ class MineField {
           thisSpot.content = mineCount;
         }
     }
+
+  calculateAllNumbers() {
+    forEach(function(y, index) {
+      forEach(function(x, index) {
+        calculateNumber(x, y);
+      });
+    });
+  } 
   
   clearSpots() {
     for(var row = 0; row < 9; row++) {
@@ -149,25 +171,23 @@ class MineField {
     }
   }
 
+
   hasWon() {
-    for(var y = 0; y < 9; y++) {
-      for(var x = 0; x < 9; x++) {
+    forEach(function(y, index) {
+      forEach(function(x, index) {
         var spot = getSpot(y, x);
         if(spot.isCovered && spot.content != "mine") {
           return false;
         }
-      } 
-    }  
+      }); 
+    });  
     return true;
   }
 
+  getTime() {
+    return new Date();
+  }
    
 }
 
 
-
-
-// use
-var mineField = new MineField();
-// use grid from
-mineField.grid
