@@ -10,7 +10,7 @@ padding:0
 .square{
     position: relative;
     width: 50px;
-   /* overflow: hidden;*/
+    overflow: hidden;
     
 }
 
@@ -45,3 +45,12 @@ padding:0
     vertical-align: middle;
     color: black;
 }
+
+/*.winMsg {
+  position: relative;
+  z-index: 1000;
+}
+.loseMsg{
+  position: relative;
+  z-index: 1000;
+}*/

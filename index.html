@@ -2,32 +2,52 @@
 <html>
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script> 
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
 <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.js"></script>  -->
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="css/minefieldGrid.css">
+<link rel="stylesheet" type="text/css" href="css/animate.css">
 <body>
   <div ng-app = 'minesweeperApp'>
     <div ng-controller="minesweeperCtrl">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-    <h1>Minesweeper</h1>
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+    <h1 align="center">Minesweeper</h1>
 
-    <div ng-show = "init">
+
+    <div class="check-element animate-show" ng-show = "init">
+      
+      <form role="form">
+        <fieldset class="form-group">
+          <label>Name:</label>
+          <input ng-model="myName" placeholder="Enter your name" type="text" class="form-control">
+        </fieldset>
+        <fieldset class = "form-group">
+          <label>Difficulty:</label>
+          <select class="form-control" ng-model="difficulty" ng-options="level.name for level in levels" placeholder="Select Difficulty"></select>
+        </fieldset>
       <button class="btn" ng-click="startGame()">START GAME</button>
+      </form>
+
+      
     </div>  
 
-      <div ng-hide = "init">
-      <button class="btn-primary" ng-click="resetMinefield()">RESET</button>
-      <button class="btn-primary" ng-click = "quit()">QUIT</button>
+      <div align="center" class="check-element animate-show" ng-hide = "init">
+      <div ng-model="myName"><label>Player:</label> {{myName}}</div>
       <p>Score: {{wins}} Wins - {{losses}} Losses</p>
 
+      <div ng-if="!winMessage && !loseMessage">
+      <button class="btn-primary" ng-click="resetMinefield()">RESET</button>
+      <button class="btn-primary" ng-click = "quit()">QUIT</button><br/>
+      </div>
+
       <p>Time:  {{timer | date : "mm:ss"}}</p>
-      <div ng-if="winMessage"><h2>You won!! Your Time: {{ timer | date : "mm:ss" }} seconds!</h2>
+      <div class="winMsg" ng-if="winMessage"><h2>You won!! Your Time: {{ timer | date : "mm:ss" }} seconds!</h2>
       <button class="btn" ng-click = "resetMinefield()">Play Again</button>
       <button class="btn" ng-click = "quit()">Quit</button>
       </div>
-      <div ng-if="loseMessage">
+      <div class="loseMsg" ng-if="loseMessage">
         <h2>You Lost!</h2>
         <button class="btn" ng-click = "resetMinefield()">Play Again</button>
         <button class="btn" ng-click = "quit()">Quit</button>
@@ -55,7 +75,7 @@
      
       </div>
     </div>
-    <div class="col-md-4"></div>
+    <div class="col-md-3"></div>
     </div>
   </div>
 </body>

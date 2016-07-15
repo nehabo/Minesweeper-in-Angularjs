@@ -1,2 +1,2 @@
 angular.module("minesweeperApp",
- ['controllers', 'directives']);
+ ['ngAnimate', 'controllers', 'directives']);
