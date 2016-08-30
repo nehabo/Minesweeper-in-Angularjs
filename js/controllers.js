@@ -7,7 +7,7 @@ controllers.controller('minesweeperCtrl', function($scope, $interval){
   $scope.levels = [
       {name:'Easy', size: 5, totalMines: 6},
       {name:'Medium', size: 9, totalMines: 10},
-      {name:'Hard', size: 14, totalMines: 20},
+      {name:'Hard', size: 14, totalMines: 22},
     ];
 
   $scope.difficulty = $scope.levels[0];    

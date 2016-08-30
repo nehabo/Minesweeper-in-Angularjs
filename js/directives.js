@@ -11,6 +11,8 @@ directives.directive('ngRightClick', function($parse) {
   };
 });
 
+
+
 directives.directive('notification', ['$timeout', function ($timeout) {
         return {
             restrict: 'E',
